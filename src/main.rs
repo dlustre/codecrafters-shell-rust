@@ -8,12 +8,9 @@ fn main() {
     // Wait for user input
     let stdin = io::stdin();
     let mut input = String::new();
-    match stdin.read_line(&mut input) {
-        Ok(_n) => {
-            let formatted = input.trim();
-            print!("{formatted}: command not found");
-        }
-        Err(error) => println!("error reading line: {error}"),
+    while let Ok(_num_bytes) = stdin.read_line(&mut input) {
+        let formatted = input.trim();
+        print!("{formatted}: command not found");
+        io::stdout().flush().unwrap();
     }
-    io::stdout().flush().unwrap();
 }
