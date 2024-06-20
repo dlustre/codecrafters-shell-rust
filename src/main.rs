@@ -1,7 +1,7 @@
 use std::{
     io::{self, Write},
     path::{Path, PathBuf},
-    process::exit,
+    process::{exit, Command},
 };
 
 fn command_in_dir(dir: &Path, command: &str) -> Option<PathBuf> {
@@ -72,7 +72,18 @@ fn main() {
                     [] => println!("No error code provided"),
                 },
                 "echo" => println!("{}", params.join(" ")),
-                _ => println!("{command}: not found"),
+                command => {
+                    if let Some(command_path) = command_in_dirs(paths.to_owned(), command) {
+                        let output = Command::new(command_path)
+                            .args(params)
+                            .output()
+                            .expect("failed to execute process");
+                        io::stdout().write_all(&output.stdout).unwrap();
+                        io::stderr().write_all(&output.stderr).unwrap();
+                    } else {
+                        println!("{command}: not found");
+                    }
+                }
             }
         }
         print!("$ ");
