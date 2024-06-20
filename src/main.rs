@@ -10,7 +10,7 @@ fn main() {
     let mut input = String::new();
     while let Ok(_num_bytes) = stdin.read_line(&mut input) {
         let formatted = input.trim();
-        print!("{formatted}: command not found");
+        println!("{formatted}: command not found");
         io::stdout().flush().unwrap();
     }
 }
