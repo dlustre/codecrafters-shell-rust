@@ -10,6 +10,6 @@ fn main() {
     let mut input = String::new();
     stdin.read_line(&mut input).unwrap();
 
-    print!("{input}: command not found");
+    print!("{}: command not found", input);
     io::stdout().flush().unwrap();
 }
