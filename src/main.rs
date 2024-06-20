@@ -48,7 +48,9 @@ fn main() {
         {
             match *command {
                 "cd" => match params[..] {
-                    [path] => match env::set_current_dir(Path::new(path)) {
+                    [path] => match env::set_current_dir(
+                        Path::new(path).canonicalize().unwrap_or_default(),
+                    ) {
                         Ok(_) => {}
                         Err(_) => println!("{path}: No such file or directory"),
                     },
