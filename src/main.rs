@@ -48,6 +48,15 @@ fn main() {
         {
             match *command {
                 "cd" => match params[..] {
+                    ["~"] => {
+                        if let Some(home_path) = option_env!("HOME") {
+                            if let Err(_) = env::set_current_dir(Path::new(home_path)) {
+                                println!("{home_path}: No such file or directory")
+                            }
+                        } else {
+                            println!("HOME not set")
+                        }
+                    }
                     [path] => match env::set_current_dir(
                         Path::new(path).canonicalize().unwrap_or_default(),
                     ) {
