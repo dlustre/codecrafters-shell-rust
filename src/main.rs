@@ -1,4 +1,5 @@
 use std::{
+    env,
     io::{self, Write},
     path::{Path, PathBuf},
     process::{exit, Command},
@@ -46,10 +47,13 @@ fn main() {
             .split_first()
         {
             match *command {
+                "pwd" => println!("{}", env::current_dir().unwrap().to_str().unwrap()),
                 "type" => {
                     for param in params {
                         match *param {
-                            "type" | "exit" | "echo" => println!("{param} is a shell builtin"),
+                            "pwd" | "type" | "exit" | "echo" => {
+                                println!("{param} is a shell builtin")
+                            }
                             _ => {
                                 if let Some(command_path) = command_in_dirs(paths.to_owned(), param)
                                 {
