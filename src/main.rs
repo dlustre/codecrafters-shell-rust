@@ -47,6 +47,13 @@ fn main() {
             .split_first()
         {
             match *command {
+                "cd" => match params[..] {
+                    [path] => match env::set_current_dir(Path::new(path)) {
+                        Ok(_) => {}
+                        Err(_) => println!("{path}: No such file or directory"),
+                    },
+                    [..] => println!("too many arguments"),
+                },
                 "pwd" => println!("{}", env::current_dir().unwrap().to_str().unwrap()),
                 "type" => {
                     for param in params {
@@ -69,7 +76,7 @@ fn main() {
                     }
                 }
                 "exit" => match params[..] {
-                    [code, ..] => match code.parse::<i32>() {
+                    [maybe_code, ..] => match maybe_code.parse::<i32>() {
                         Ok(code) => exit(code),
                         Err(_) => println!("Invalid exit code"),
                     },
